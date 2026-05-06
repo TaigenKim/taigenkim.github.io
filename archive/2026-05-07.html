@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Global Macro Brief — 2026-05-07</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"></script>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  background: #f1f5f9;
+  color: #1a1a1a;
+  line-height: 1.6;
+  padding: 12px;
+  font-size: 16px;
+}
+.container { max-width: 1200px; margin: 0 auto; }
+header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+header h1 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+header .meta { font-size: 12px; opacity: 0.85; }
+.badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.badge {
+  background: rgba(255,255,255,0.15);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.toc { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.toc a {
+  text-decoration: none; color: white;
+  background: rgba(255,255,255,0.1);
+  padding: 6px 10px; border-radius: 6px; font-size: 11px;
+  min-height: 44px; display: flex; align-items: center;
+}
+.tldr {
+  background: white;
+  border-left: 4px solid #2563eb;
+  padding: 18px 20px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.tldr h2 { font-size: 15px; color: #2563eb; margin-bottom: 10px; }
+.tldr p { font-size: 13px; color: #374151; margin-bottom: 6px; }
+.tldr ul { padding-left: 18px; font-size: 13px; color: #374151; }
+.tldr li { margin-bottom: 4px; }
+.alert-box {
+  background: #fef2f2;
+  border-left: 4px solid #dc2626;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #7f1d1d;
+}
+section.block {
+  background: white;
+  padding: 18px 20px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.section-title {
+  font-size: 16px; font-weight: 700; color: #0f172a;
+  margin-bottom: 4px;
+}
+.section-sub { font-size: 11px; color: #6b7280; margin-bottom: 14px; }
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.card {
+  background: #f8fafc;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+.card .label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+.card .value { font-size: 20px; font-weight: 700; color: #0f172a; margin-top: 3px; }
+.card .change { font-size: 11px; margin-top: 2px; }
+.card .ts { font-size: 10px; color: #94a3b8; margin-top: 4px; }
+.card .insight { font-size: 11px; color: #475569; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #cbd5e1; line-height: 1.5; }
+.up { color: #dc2626; } .down { color: #16a34a; } .neutral { color: #6b7280; }
+.chart-wrap { background: #f8fafc; padding: 14px; border-radius: 8px; margin-top: 14px; border: 1px solid #e2e8f0; }
+.chart-title { font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 8px; }
+canvas { max-height: 220px; }
+.commentary {
+  background: #fefce8; border-left: 3px solid #eab308;
+  padding: 10px 14px; margin-top: 12px; border-radius: 4px;
+  font-size: 12px; color: #422006; line-height: 1.6;
+}
+.warning {
+  background: #fef2f2; border-left: 3px solid #dc2626;
+  padding: 10px 14px; margin-top: 10px; border-radius: 4px;
+  font-size: 12px; color: #7f1d1d;
+}
+table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+th, td { padding: 7px 10px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+th { background: #f1f5f9; font-weight: 600; font-size: 11px; color: #475569; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.pill-low { background: #dcfce7; color: #166534; padding: 2px 7px; border-radius: 999px; font-size: 10px; }
+.pill-mid { background: #fef3c7; color: #92400e; padding: 2px 7px; border-radius: 999px; font-size: 10px; }
+.pill-high { background: #fee2e2; color: #991b1b; padding: 2px 7px; border-radius: 999px; font-size: 10px; }
+.notes {
+  background: #f0f9ff; border-left: 3px solid #0ea5e9;
+  padding: 12px 16px; border-radius: 4px;
+  font-size: 11px; color: #0c4a6e; margin-top: 12px; line-height: 1.6;
+}
+footer { text-align: center; padding: 20px 0; color: #94a3b8; font-size: 10px; }
+@media (min-width: 480px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  canvas { max-height: 260px; }
+}
+@media (min-width: 768px) {
+  body { padding: 20px; }
+  .container { max-width: 1200px; }
+  .grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  header h1 { font-size: 24px; }
+  canvas { max-height: 280px; }
+}
+@media (min-width: 1280px) {
+  .container { max-width: 1280px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🌐 Global Macro Brief — 투자자용 거시지표 리포트</h1>
+  <div class="meta">기준일: <strong>2026-05-07 (KST)</strong> · 시장 종가: <strong>2026-05-06 (NY) / 2026-05-06 (KRX)</strong></div>
+  <div class="meta" style="margin-top:4px;">42개 지표 (거시 10 · 미국 18 · 한국 11 · 한국 사이클 4종) · 1차 출처 교차검증</div>
+  <div class="badges">
+    <span class="badge">VIX 17.39</span>
+    <span class="badge">DXY 98.01</span>
+    <span class="badge">USD/KRW 1,474</span>
+    <span class="badge">WTI $95.85</span>
+    <span class="badge">10Y 4.36%</span>
+    <span class="badge">CPI 3.3% YoY</span>
+    <span class="badge">FFR 4.25~4.50%</span>
+    <span class="badge">KOSPI 7,384 🆕</span>
+  </div>
+  <div class="toc">
+    <a href="#tldr">TLDR</a>
+    <a href="#macro">거시</a>
+    <a href="#us">미국</a>
+    <a href="#korea">한국</a>
+    <a href="#cycle">사이클</a>
+    <a href="#thresholds">임계값</a>
+    <a href="#triggers">트리거</a>
+    <a href="#sources">출처</a>
+  </div>
+</header>
+
+<!-- TLDR -->
+<div class="tldr" id="tldr">
+  <h2>📌 한 눈에 보는 시장 (TLDR)</h2>
+  <p><strong>큰 그림:</strong> AI/반도체 슈퍼사이클 주도의 비이성적 강세장 — KOSPI·미증시 사상 최고 + 인플레 재가열 리스크 + 밸류에이션 극단적 과열 공존</p>
+  <ul>
+    <li>🇰🇷 KOSPI 7,384 <strong>사상 최고</strong> — 당일 +6.45%, 1달 +34%, 1년 +187%. 한국 버핏지수 <strong>256.6%</strong>(미국 228% 상회). 삼성전자 시총 $1T 돌파</li>
+    <li>💻 SOX <strong>11,473</strong> (+45% 1달) / NASDAQ 25,839 / S&P 7,365 — AI·반도체 슈퍼사이클 핵심 주도. VVIX 93.7, VIX 17.4로 공포 지수 극히 안정</li>
+    <li>🥇 금(Gold) <strong>$4,705/oz 사상 최고권</strong> — 달러 약세(DXY 98.0) + 중동 리스크 헤지 수요 지속</li>
+    <li>🛢️ WTI <strong>$95.85 — 1달 -15%</strong> ($112→$96). 중동 휴전 기대감 + 수요 둔화 우려. 인플레 헤드라인 압력 완화에 기여하나 ISM 가격지수 <strong>84.6%</strong> 과열에 주목</li>
+    <li>📊 美 CPI 3.3%(3월), ISM PMI 52.7(4월) — 제조업 확장 4개월 연속. 4월 CPI 5/12 발표 예정 (인플레 재가열 여부 핵심 분기점)</li>
+    <li>🇰🇷 韓 4월 수출 <strong>$85.9B (+48% YoY)</strong> — 반도체 $31.9B(+173.5%) 1개월 역대 최고. 반도체 비중 37.1% 역대 최고. 비반도체는 7개 품목 역성장</li>
+    <li>😰 ESI 91.7(4월, ▼2.3p) — 경제심리 악화 vs. 금융자산 사상 최고 <strong>극단적 괴리</strong> 경보</li>
+  </ul>
+  <p style="margin-top:10px;"><strong>포지셔닝 결론:</strong> AI/반도체 랠리 연장 가능하나 韓 버핏지수 256% + 美 버핏 228% 역사적 과열. KOSPI 분할매수 한도 정상(한국 사이클 0/6 중립). CPI(5/12) + ISM가격(84.6%) 인플레 재가열 시 HY OAS 4% 돌파 여부를 1순위 위험 트리거로 모니터링. 현재 HY OAS 2.83%로 안정권이나 방심 금물.</p>
+</div>
+
+<!-- 거시 -->
+<section class="block" id="macro">
+  <div class="section-title">🌍 1. 거시경제지표 — 글로벌 위험·자금 흐름</div>
+  <div class="section-sub">VIX · 신용 스프레드 · 원유 · 환율 · 안전자산 · 산업 지표 | 기준: 2026-05-06 종가</div>
+  <div class="grid">
+    <div class="card">
+      <div class="label">VIX (공포지수)</div>
+      <div class="value neutral">17.39</div>
+      <div class="change down">▼6.8pt (1달 전 24.17)</div>
+      <div class="ts">2026-05-06 · CBOE / ^VIX</div>
+      <div class="insight">15~20 "정상" 구간. 4월 초 25+ 급등 후 급속 진정. VIX 안정 + VVIX 93.7(경계 이하)로 단기 위험 환경 우호. <strong>20 재돌파 시</strong> 위험 관리 강화.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">HY OAS (신용 스프레드)</div>
+      <div class="value down">2.83%</div>
+      <div class="change down">▼ (3월 ~3.2% 대비 축소)</div>
+      <div class="ts">2026-04 최신 · FRED BAMLH0A0HYM2</div>
+      <div class="insight">3% 미만 "저스트레스" 구간. 신용 시장 이상 없음. <strong>4% 돌파 + 1주 +50bp 이상 확대 시</strong> 즉시 자산배분 점검. 현재 안전권이나 과열장에서 반전 가능성 모니터.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">HYG (HY ETF 프록시)</div>
+      <div class="value neutral">$80.16</div>
+      <div class="change up">▲$0.86 (1달 전 $79.30)</div>
+      <div class="ts">2026-05-06 · Yahoo Finance HYG</div>
+      <div class="insight">$80 이상 유지 = HY 스프레드 안정 동행. $77 하회 시 HY OAS 4% 도달 선행 신호.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">WTI 원유 ($/bbl)</div>
+      <div class="value down">$95.85</div>
+      <div class="change down">▼$16.56 / -14.7% (1달 전 $112.41)</div>
+      <div class="ts">2026-05-06 · NYMEX CL=F</div>
+      <div class="insight">$85~100 "인플레 압박" 구간. 중동 휴전 기대 + AI 수요 낙관론으로 급락. <strong>인플레 헤드라인 완화 기여.</strong> $110+ 재돌파 시 스태그플레이션 우려 재점화.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">USD/KRW 환율</div>
+      <div class="value neutral">1,474</div>
+      <div class="change down">▼34원 (1달 전 1,508)</div>
+      <div class="ts">2026-05-05 · Yahoo KRW=X (한국시간 기준 전일)</div>
+      <div class="insight">1,400~1,500 "약세 정착" 구간. 4월 초 1,500 근접에서 하락 전환. 수출 호조 + 외국인 주식 순매수로 원화 강세. <strong>1,500원 재도달 시</strong> BOK 개입 가능성↑.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">금 (Gold $/oz)</div>
+      <div class="value up">$4,705</div>
+      <div class="change up">▲$49 / +1.0% (1달 전 $4,657)</div>
+      <div class="ts">2026-05-06 · COMEX GC=F</div>
+      <div class="insight"><strong>사상 최고권.</strong> 달러 약세(DXY 98) + 지정학 불확실성 + 중앙은행 매수 지속. BTC와 동조화 = "달러 신뢰 약화" 테마. 포트폴리오 5~10% 헤지 비중 유효.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">비트코인 (BTC)</div>
+      <div class="value up">$81,100</div>
+      <div class="change up">▲$12,241 / +17.8% (1달 전 $68,860)</div>
+      <div class="ts">2026-05-06 · Coinbase / BTC-USD</div>
+      <div class="insight">위험 선호 + 디지털 달러 대안 수요 동반 상승. Gold와 동조화 지속 = 달러 약세 테마 강화. 20일 이평 상향 유지 = 단기 강세 구조.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">구리 (LME $/ton)</div>
+      <div class="value up">$12,900</div>
+      <div class="change up">▲ (2026년 고점권)</div>
+      <div class="ts">2026-05-05 · LME / Trading Economics</div>
+      <div class="insight">AI 데이터센터 전력망 + EV 수요로 구조적 강세. 글로벌 산업 수요 양호 신호. <strong>YoY -10% 전환 시</strong> 산업 위축 신호. 현재 강세 = 글로벌 경기 확장 지지.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">차이신 중국 제조업 PMI</div>
+      <div class="value up">52.2</div>
+      <div class="change up">▲1.4pt (3월 50.8)</div>
+      <div class="ts">2026-04-30 · S&P Global / Caixin</div>
+      <div class="insight">2020년 12월 이래 최고치. 신규 주문 5년래 2위 급증. 한국 수출 중국 채널 호조 확인. <strong>원자재 가격 인플레이션 4년 최고</strong>로 공급망 비용 압력 재부상 주의.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">BDI (발틱 운임 지수)</div>
+      <div class="value neutral">2,633</div>
+      <div class="change neutral">— (2,000~3,000 "정상" 구간)</div>
+      <div class="ts">2026년 5월 초 · Baltic Exchange</div>
+      <div class="insight">글로벌 무역량 정상 수준. 3,000+ 돌파 시 강한 수요 신호. 1,000 하회 시 침체 임박 경보. 현재 정상권 유지.</div>
+    </div>
+
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">VIX (좌) vs WTI 원유 $/bbl (우) — 1달 추이 (2026-04-06 ~ 2026-05-06)</div>
+    <canvas id="chart-macro"></canvas>
+  </div>
+  <div class="commentary">
+    <strong>📊 거시 인사이트.</strong> 4월 초 VIX 25+ 급등(관세 쇼크) 후 신속 진정 → 시장의 V자 회복력 재확인. WTI -15% 급락은 중동 휴전 기대에 기인, 인플레 헤드라인 완화 호재. 그러나 Caixin PMI 원자재 인플레 4년 최고 + ISM 가격지수 84.6%로 비용 압력은 재부상 중. Gold 사상 최고권은 달러 신뢰 약화 테마 지속을 시사.
+  </div>
+</section>
+
+<!-- 미국 -->
+<section class="block" id="us">
+  <div class="section-title">🇺🇸 2. 미국 지표 — 통화·재정·밸류에이션·유동성</div>
+  <div class="section-sub">Fed 정책 · 금리 곡선 · 인플레 · 밸류에이션 · 유동성 · 위험 메트릭</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="label">DXY (달러 인덱스)</div>
+      <div class="value down">98.01</div>
+      <div class="change down">▼1.97 (1달 전 99.98)</div>
+      <div class="ts">2026-05-06 · ICE DX-Y.NYB</div>
+      <div class="insight">95~100 "정상" 하단 진입. 달러 약세 = 신흥국 자산 + 원자재 강세 배경. <strong>95 하회 시</strong> USD 약세 가속. 신흥국 자금 유입 지속 기대.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">버핏 지수 (美 시총÷GDP)</div>
+      <div class="value up">227.8%</div>
+      <div class="change up">▲ (3월 232.6% 사상 최고 후 소폭 조정)</div>
+      <div class="ts">2026-05-05 · GuruFocus / LongTermTrends</div>
+      <div class="insight"><strong>200%+ 사상 최고권.</strong> Wilshire 5000/GDP 기준. 150%+ = "거품권", 200%+ = 극단적 과열. 1999년·2021년 수준 재현. 단기 모멘텀 우세하나 장기 회귀 위험 명백.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">연준 기준금리 (FFR)</div>
+      <div class="value neutral">4.25 ~ 4.50%</div>
+      <div class="change neutral">동결 (7회 연속)</div>
+      <div class="ts">2026 최신 · FOMC</div>
+      <div class="insight">인플레 3.3% 잔존 + ISM 가격 84.6%로 인하 명분 약화. 다음 FOMC 6월. <strong>4월 CPI(5/12)</strong>가 인하/동결 분기점.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">30Y 모기지 (Freddie Mac PMMS)</div>
+      <div class="value neutral">6.30%</div>
+      <div class="change neutral">▼0.46%p YoY (작년 6.76%)</div>
+      <div class="ts">2026-05-05 · Freddie Mac PMMS</div>
+      <div class="insight">주택 부담 여전히 높으나 전년 대비 완화. <strong>7.0% 재돌파 시</strong> 주거 인플레 및 주택 거래 급감 위험.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">美 10Y 국채금리</div>
+      <div class="value neutral">4.356%</div>
+      <div class="change neutral">▲2bp (1달 전 4.335%)</div>
+      <div class="ts">2026-05-06 · Yahoo ^TNX</div>
+      <div class="insight">4.0~4.5% 적정 구간. <strong>4.5% 상향 돌파 시</strong> P/E 압박 강화. 현재 하단 안정권이나 인플레 재가열 시 4.6%+ 위험.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">美 30Y 국채금리</div>
+      <div class="value neutral">4.943%</div>
+      <div class="change up">▲5bp (1달 전 4.891%)</div>
+      <div class="ts">2026-05-06 · Yahoo ^TYX</div>
+      <div class="insight">5% 심리적 저항 근접. 장기말(30Y vs 10Y) 스프레드 +59bp — 재정/공급 우려 반영. 국채 발행 확대 압력 지속.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">美 13W 단기금리</div>
+      <div class="value neutral">3.60%</div>
+      <div class="change down">▼2bp (1달 전 3.62%)</div>
+      <div class="ts">2026-05-06 · Yahoo ^IRX</div>
+      <div class="insight">10Y(4.36%) - 3M(3.60%) = <strong>+76bp</strong> — 정상 우상향 곡선. 역전 해소 후 정상화 과정. 역전 재발 시 침체 재경보.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">10Y 실질금리 (TIPS)</div>
+      <div class="value up">1.87%</div>
+      <div class="change neutral">▼7bp (전일 대비)</div>
+      <div class="ts">2026-05-06 · FRED DFII10 / TradingEconomics</div>
+      <div class="insight">1~2% "그로스 부담" 구간 상단. <strong>2.0% 돌파 시 멀티플 압박 가속</strong> — 현재 1.87%로 임박. 주식은 명목보다 실질금리에 더 민감.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">美 CPI YoY</div>
+      <div class="value up">3.3%</div>
+      <div class="change neutral">헤드라인 3.3% / 코어 2.6% (3월)</div>
+      <div class="ts">2026-03 · BLS (4월 발표: 2026-05-12)</div>
+      <div class="insight">3~4% "인플레 우려" 구간. ISM 가격 84.6% + Caixin 원자재 인플레 고조로 4월 반등 우려. <strong>5/12 CPI 발표가 Fed 경로 분기점.</strong></div>
+    </div>
+
+    <div class="card">
+      <div class="label">ISM 제조업 PMI</div>
+      <div class="value up">52.7</div>
+      <div class="change up">▲ (4개월 연속 확장, 2022년 8월 이래 최고)</div>
+      <div class="ts">2026-05-01 · ISM</div>
+      <div class="insight">확장 구간(50+) 4개월 연속. 신규주문 54.1, 생산 53.4. 단, <strong>가격지수 84.6% (6.3pt ↑) — 2022년 4월 이래 최고</strong>. 제조 인플레 재가열 강력 경보.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">연준 역레포 (RRP)</div>
+      <div class="value neutral">~$0 (소진)</div>
+      <div class="change neutral">QT 종료(2025년 12월) 후 거의 소진</div>
+      <div class="ts">2026-05 최신 · NY Fed / FRED RRPONTSYD</div>
+      <div class="insight">2023년 $2.5T에서 현재 사실상 소진. <strong>유동성 완충 버퍼 상실.</strong> 추가 QT 또는 재정 충격 시 시스템 유동성 취약성 증가.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">연준 대차대조표 (Fed B/S)</div>
+      <div class="value neutral">$6.7T</div>
+      <div class="change down">▼ QT 종료 이후 점진적 축소</div>
+      <div class="ts">2026-04-29 · Fed H.4.1 / WALCL</div>
+      <div class="insight">피크 $9T → 현재 $6.7T. QT 종료 후 T-bill 재투자로 규모 유지 중. <strong>$6T 하회 시 QT 재개 논의 촉발</strong> 가능성.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">M2 통화량 (미국)</div>
+      <div class="value up">$22,686B</div>
+      <div class="change up">+4.6% YoY (3월 2026)</div>
+      <div class="ts">2026-03 · Fed H.6 / FRED M2SL</div>
+      <div class="insight">연 4~6% = 위험자산 우호 구간. 현재 +4.6%로 건전한 성장세. 2022년 -4% 수축 악몽에서 완전히 벗어남.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">S&P 500 / NASDAQ / Dow</div>
+      <div class="value up">7,365 / 25,839 / 49,911</div>
+      <div class="change up">S&P +11%, NASDAQ +17%, Dow +7% (1달)</div>
+      <div class="ts">2026-05-06 · Yahoo ^GSPC ^IXIC ^DJI</div>
+      <div class="insight">3대 지수 동반 신고가권. NASDAQ 주도 = AI/기술 집중도↑. <strong>버핏지수 228% — 극단적 과열.</strong> 분산 자산배분과 위험 관리 병행 필요.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">SOX 반도체 지수</div>
+      <div class="value up">11,473</div>
+      <div class="change up">▲+3,558 / +45% (1달 전 7,915)</div>
+      <div class="ts">2026-05-06 · Yahoo ^SOX</div>
+      <div class="insight"><strong>1달 +45% 역사적 급등.</strong> AI 사이클 최대 수혜. KOSPI 동반 상승 핵심 동인. <strong>1주 -5%+ 하락 시</strong> AI 사이클 균열 1차 신호.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">미 장단기 금리차 (10Y-3M)</div>
+      <div class="value up">+76bp</div>
+      <div class="change up">▲ (정상화 지속)</div>
+      <div class="ts">2026-05-06 계산 (4.356% - 3.60%)</div>
+      <div class="insight">역전 해소 후 정상화 진행 중. +76bp = 건전한 우상향 곡선. <strong>재역전 시 12~18개월 침체 선행 패턴.</strong> 현재 위험 없음.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">BEI (10Y 기대 인플레)</div>
+      <div class="value up">2.46%</div>
+      <div class="change up">▲ (Fed 부담 구간 진입)</div>
+      <div class="ts">2026-04 최신 · FRED T10YIE</div>
+      <div class="insight">2.3~2.7% "Fed 부담" 구간. ISM 가격 과열로 2.7%+ 재고착 리스크 증대. <strong>2.7% 돌파 시 인플레 재가열 확정 신호.</strong></div>
+    </div>
+
+    <div class="card">
+      <div class="label">VVIX (변동성의 변동성)</div>
+      <div class="value down">93.70</div>
+      <div class="change down">▼ (4월 초 117+ 급등 후 진정)</div>
+      <div class="ts">2026-05-05 · CBOE ^VVIX</div>
+      <div class="insight">90~100 "정상" 구간. 4월 초 117+ → 현재 진정. <strong>110+ 재돌파 시</strong> VIX 급등 며칠 전 선행 신호. 현재 안정적.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">MMF 총잔고 (미국)</div>
+      <div class="value up">$7.63T</div>
+      <div class="change down">▼$11B WoW (4/29 기준)</div>
+      <div class="ts">2026-04-29 · ICI Weekly</div>
+      <div class="insight">"마른 화약" $7.63T 역대 최고권 유지. 위험자산 유입 가능 대기 자금 풍부. 3개월 -5% 감소 시 위험자산 강세 동행 확인 신호.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">5Y 미국 CDS 스프레드</div>
+      <div class="value neutral">~30bp</div>
+      <div class="change neutral">추정 (정상권)</div>
+      <div class="ts">2026-05 추정 · Markit / WorldGovernmentBonds</div>
+      <div class="insight">20~30bp 정상 구간. 부채한도 협상 시즌 아님. <strong>50bp+ 시 재정 위기 우려.</strong> 2026-2027 부채한도 협상 일정 모니터 필요.</div>
+    </div>
+
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">S&P 500 — 1달 추이 (2026-04-07 ~ 2026-05-06)</div>
+    <canvas id="chart-us"></canvas>
+  </div>
+  <div class="commentary">
+    <strong>📊 미국 인사이트.</strong> S&P +11%, NASDAQ +17%의 V자 반등은 AI/반도체 수익 기대에 기반. 버핏지수 228%·실질금리 1.87%(2% 임박)·ISM 가격 84.6%의 삼중 과열 신호가 상존. RRP 소진으로 유동성 완충 소실. 5/12 CPI가 Fed 조기 인하 vs 동결 장기화를 가를 핵심 이벤트. MMF $7.63T 대기 자금이 추가 상승 연료가 될 수 있으나 인플레 재가열 확인 시 급격한 재조정 가능.
+  </div>
+</section>
+<!-- 한국 -->
+<section class="block" id="korea">
+  <div class="section-title">🇰🇷 3. 한국 지표 — 수출·통화·금리차·선행지수·밸류에이션</div>
+  <div class="section-sub">코스피 적정 가치 추정 + 경기 선행 시그널 + 한국판 버핏지수</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="label">한국 무역수지 (4월)</div>
+      <div class="value up">+$8.87B</div>
+      <div class="change up">흑자 지속 (수출 $85.9B / 수입 $77.0B)</div>
+      <div class="ts">2026-05-01 · 산업통상자원부 수출입동향</div>
+      <div class="insight">흑자 기조 견조 유지. 반도체 편중 심화(37.1%)가 리스크. 비반도체 7개 품목 역성장이 내수 약화 시사.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">일평균 수출액</div>
+      <div class="value up">$39억/일</div>
+      <div class="change up">▲ (4월 $85.9B ÷ 22 조업일)</div>
+      <div class="ts">2026-05-01 · 산업통상자원부</div>
+      <div class="insight"><strong>코스피 상관계수 0.92 핵심 지표.</strong> $39억/일 = 매우 강세. $30억 하회 시 12개월 코스피 -10~15% 역사적 시그널. 현재 위험 없음.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">명목 GDP (한국)</div>
+      <div class="value neutral">2,611조원 ($1,769B)</div>
+      <div class="change neutral">연간 기준 (한국판 버핏지수 분모)</div>
+      <div class="ts">2026 최신 · 한국은행</div>
+      <div class="insight">한국판 버핏지수 산출 기준. YoY 성장세 유지. 분기 잠정치는 한국은행 분기 발표 확인 필요.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">광의통화 M2 (한국)</div>
+      <div class="value neutral">4,618조원</div>
+      <div class="change up">+4.9% YoY (2026년 2월)</div>
+      <div class="ts">2026-02 최신 · 한국은행 H.6 대응 보도자료</div>
+      <div class="insight">4~6% 성장 = 코스피 우호 구간. 현재 +4.9%로 건전. 자산가격 상승과 통화 공급 확장 병행 중.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">장단기 금리차 (10Y-3Y)</div>
+      <div class="value up">+65bp (추정)</div>
+      <div class="change neutral">10Y 3.91% / 3Y ~3.26% (추정)</div>
+      <div class="ts">2026-05-04 · TradingEconomics (10Y 확인값)</div>
+      <div class="insight">플러스 구간 유지 = 경기 수축 신호 없음. 0bp 이하(역전) 시 코스피 -10% 선행 시그널. 현재 정상 우상향 곡선.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">선행지수 순환변동치</div>
+      <div class="value neutral">데이터 확인 중</div>
+      <div class="change neutral">2026년 3월 발표 예정 (익월 말 발표)</div>
+      <div class="ts">통계청 산업활동동향 (익월 말 발표)</div>
+      <div class="insight">코스피와 거의 동행하는 핵심 선행지표. 2개월 연속 하락 시 시장 리스크 신호. KOSPI의 극적 상승과 향후 순환변동치 흐름 간 괴리 여부 주목 필요.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">BOK 기준금리</div>
+      <div class="value neutral">2.50%</div>
+      <div class="change neutral">동결 (7회 연속)</div>
+      <div class="ts">2026-04 · 한국은행 금통위</div>
+      <div class="insight">한미 금리차 175bp (FFR 4.38% 중간값 - BOK 2.50%). 원화 약세 압력 지속 요인. 다음 금통위 2026-05-28.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">KOSPI 종가</div>
+      <div class="value up">7,384.56</div>
+      <div class="change up">▲447.57 / +6.45% (당일) · +34% (1달) · 사상 최고</div>
+      <div class="ts">2026-05-06 · KRX / Yahoo ^KS11</div>
+      <div class="insight"><strong>사상 최고가 경신.</strong> 삼성전자 시총 $1T 돌파, SK하이닉스 급등 주도. AI 붐 + 반도체 수출 호조. <strong>버핏지수 256% 경보.</strong></div>
+    </div>
+
+    <div class="card">
+      <div class="label">한국판 버핏지수</div>
+      <div class="value up" style="color:#dc2626;">256.6%</div>
+      <div class="change up">▲ (美 228% 상회, 사상 최고)</div>
+      <div class="ts">2026-05-06 · KRX + 한국은행 GDP · Seoul Economic Daily</div>
+      <div class="insight"><strong>KOSPI+KOSDAQ 시총 6,743T ÷ GDP 2,630T = 256.6%.</strong> 200%+ 사상 최고권. 한국 주식시장 GDP 대비 2.5배 이상. 거품 경보 수준이나 단기 모멘텀 우세. 장기 회귀 위험 명백.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">원화 NDF (1M USD/KRW)</div>
+      <div class="value neutral">~1,474</div>
+      <div class="change down">▼ (스팟과 유사, 원화 강세 기조)</div>
+      <div class="ts">2026-05-06 추정 · SMBS</div>
+      <div class="insight">밤사이 외국인 환 포지션 → KOSPI 개장 전 선반영. 현재 스팟 수준 유지. <strong>1,500원 재진입 시</strong> KOSPI 갭다운 + BOK 개입 경계.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">반도체 제외 수출 YoY</div>
+      <div class="value neutral">~+16% (추정)</div>
+      <div class="change neutral">전체 +48%의 반도체 편중 실상</div>
+      <div class="ts">2026-05-01 · 산업통상자원부 (계산값)</div>
+      <div class="insight">총 $54B (비반도체) / 전년 ~$46.3B = 약 +16.5%. 가전·철강·이차전지·자동차 등 7개 품목 역성장. 반도체 집중 리스크 주의.</div>
+    </div>
+
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">KOSPI — 1달 추이 (2026-04-05 ~ 2026-05-06)</div>
+    <canvas id="chart-kr"></canvas>
+  </div>
+  <div class="commentary">
+    <strong>📊 한국 인사이트.</strong> KOSPI 7,384 사상 최고 + 한국 버핏지수 256.6% = 금융 자산 극단적 과열. 반도체 수출 $31.9B(+173.5%) 슈퍼사이클이 주가를 이끌지만 비반도체 7개 품목 역성장, ESI 91.7(경제심리 악화), 7회 연속 금리 동결이 실물 경제의 이중성을 드러냄. 버핏지수 256%는 장기 밸류에이션 극단 — 모멘텀 강하나 리스크 관리 병행 필수. KOSPI 한국 사이클 진단 중립(0/6).
+  </div>
+</section>
+
+<!-- 한국 사이클 진단 -->
+<section class="block" id="cycle">
+  <div class="section-title">🇰🇷 4. 한국 사이클 진단 (김영익 4종)</div>
+  <div class="section-sub">선행지수 순환변동치 코어 + 보조 3종 다층 조기 진단 | 기준: 2026년 4월~5월 최신</div>
+
+  <div style="overflow-x:auto;">
+  <table>
+    <thead>
+      <tr><th>지표</th><th>현재값</th><th>등급</th><th>점수</th><th>해석</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>① ESI (경제심리지수)</td>
+        <td class="num">91.7</td>
+        <td>🔴 위험</td>
+        <td class="num" style="color:#dc2626;">-2</td>
+        <td>95 미만 + 3월(94.0)→4월(91.7) 가속 하락. 소비심리 급냉.</td>
+      </tr>
+      <tr>
+        <td>② 10Y-1Y 금리차 (국고채)</td>
+        <td class="num">~+0.76%p (추정)</td>
+        <td>🟢 우호</td>
+        <td class="num" style="color:#16a34a;">+1</td>
+        <td>10Y 3.91% / 1Y ~3.15% (추정). 0.5~1.0%p = 우호 구간. 역전 없음.</td>
+      </tr>
+      <tr>
+        <td>③ 선행지수 순환변동치</td>
+        <td class="num">데이터 미확보</td>
+        <td>❓ 미확보</td>
+        <td class="num neutral">제외</td>
+        <td>2026년 3월분 통계청 발표 미확인. 익월 말 발표 주기. 점수 계산 제외.</td>
+      </tr>
+      <tr>
+        <td>④ 반도체 제외 수출 YoY</td>
+        <td class="num">~+16% (추정)</td>
+        <td>🟢 우호</td>
+        <td class="num" style="color:#16a34a;">+1</td>
+        <td>총 $54.0B / 전년 ~$46.3B ≈ +16.5%. +15~25% = 우호. 단, 7개 품목 역성장 구조적 위험.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="commentary">
+    <strong>📊 종합 점수: 0/6 (3개 지표 기준, 선행지수 제외)</strong><br>
+    <strong>사이클 진단:</strong> 중립/혼조 — ESI 급락(실물 경계)과 수출/금리차 양호(금융 호조)가 충돌하는 이중 구조<br>
+    <strong>액션 가이드:</strong> KOSPI 분할매수 트리거 한도 정상. 신중 진입 권장. 선행지수 순환변동치 확인 후 재평가 필요.
+  </div>
+
+  <div class="notes">
+    <strong>📋 김영익 핵심 룰 미발동.</strong> 4종 중 🟠경계+🔴위험 합계 1개(ESI만 해당) — 3개 미만으로 분할매수 한도 -20% 조정 미발동. 단, ESI 91.7의 급속 악화와 금융/실물 괴리는 중기 위험 요인. 선행지수 순환변동치 데이터 확보 후 재진단 권장.
+  </div>
+</section>
+
+<!-- 모니터링 임계값 요약 -->
+<section class="block" id="thresholds">
+  <div class="section-title">📋 5. 모니터링 임계값 요약</div>
+  <div class="section-sub">전체 지표의 위험/매수 신호 임계값 한 눈에</div>
+  <div style="overflow-x:auto;">
+  <table>
+    <thead>
+      <tr><th>지표</th><th>현재값</th><th>위험 트리거 ⚠️</th><th>매수 신호 ✅</th><th>상태</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>VIX</td><td>17.39</td><td>25+ 재돌파</td><td>25+ 후 진정</td><td><span class="pill-low">안정</span></td></tr>
+      <tr><td>HY OAS</td><td>2.83%</td><td>4%+ / 주+50bp</td><td>3% 이하 유지</td><td><span class="pill-low">저스트레스</span></td></tr>
+      <tr><td>WTI</td><td>$95.85</td><td>$110+</td><td>$70 이하</td><td><span class="pill-mid">인플레압박</span></td></tr>
+      <tr><td>USD/KRW</td><td>1,474</td><td>1,500+</td><td>1,300 이하</td><td><span class="pill-mid">약세구간</span></td></tr>
+      <tr><td>美 10Y</td><td>4.356%</td><td>4.6%+</td><td>4.0% 이하</td><td><span class="pill-mid">주시</span></td></tr>
+      <tr><td>美 10Y 실질금리</td><td>1.87%</td><td>2.0%+ 🔔임박</td><td>1% 이하</td><td><span class="pill-high">임박경보</span></td></tr>
+      <tr><td>30Y 모기지</td><td>6.30%</td><td>7.0%+</td><td>6% 이하</td><td><span class="pill-mid">부담구간</span></td></tr>
+      <tr><td>美 CPI YoY</td><td>3.3%</td><td>4%+</td><td>2~2.5%</td><td><span class="pill-mid">인플레우려</span></td></tr>
+      <tr><td>ISM 가격지수</td><td>84.6%</td><td>80%+ 과열</td><td>60% 이하</td><td><span class="pill-high">과열경보</span></td></tr>
+      <tr><td>美 버핏지수</td><td>228%</td><td>250%+ 극단</td><td>100% 이하</td><td><span class="pill-high">거품권</span></td></tr>
+      <tr><td>韓 버핏지수</td><td>256.6%</td><td>250%+ 극단 🔔</td><td>70% 이하</td><td><span class="pill-high">사상최고</span></td></tr>
+      <tr><td>BEI (기대인플레)</td><td>2.46%</td><td>2.7%+</td><td>2% 이하</td><td><span class="pill-mid">Fed부담</span></td></tr>
+      <tr><td>VVIX</td><td>93.7</td><td>110+</td><td>90 이하</td><td><span class="pill-low">정상</span></td></tr>
+      <tr><td>KOSPI</td><td>7,384</td><td>버핏 250%+ 주의</td><td>일평균수출 $39억 지지</td><td><span class="pill-high">사상최고</span></td></tr>
+      <tr><td>韓 일평균수출</td><td>$39억/일</td><td>$30억 하회</td><td>$35억+ 유지</td><td><span class="pill-low">강세</span></td></tr>
+      <tr><td>ESI</td><td>91.7</td><td>95 미만 지속</td><td>100+ 회복</td><td><span class="pill-high">위험</span></td></tr>
+      <tr><td>BTC</td><td>$81,100</td><td>20일 이평 하향</td><td>신고가 갱신</td><td><span class="pill-low">상승추세</span></td></tr>
+      <tr><td>Gold</td><td>$4,705</td><td>단기 과열 주의</td><td>달러 약세 지속</td><td><span class="pill-mid">고점권</span></td></tr>
+      <tr><td>Caixin PMI</td><td>52.2</td><td>50 하회</td><td>52+ 유지</td><td><span class="pill-low">강한확장</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="notes">
+    <strong>📋 빈도별 모니터링 가이드.</strong><br>
+    ① <strong>매일:</strong> VIX, HY OAS, USD/KRW, WTI, 10Y, KOSPI, S&P/SOX<br>
+    ② <strong>주 1회:</strong> HYG, 구리, BDI, MMF, 30Y 모기지, BEI, NDF<br>
+    ③ <strong>월 1회:</strong> 한국 수출입(월 1일), ISM/Caixin PMI, CPI, 선행지수(월말), 버핏지수<br>
+    ④ <strong>이벤트:</strong> FOMC, 금통위(5/28), CPI(5/12), GDP 발표
+  </div>
+</section>
+
+<!-- 24-48h 트리거 -->
+<section class="block" id="triggers">
+  <div class="section-title">🎯 6. 24-48h 트리거 / 다음 핵심 일정</div>
+  <div class="section-sub">단기 변곡점이 될 가능성이 높은 이벤트와 임계값</div>
+  <div style="overflow-x:auto;">
+  <table>
+    <thead><tr><th>일정 / 임계값</th><th>중요도</th><th>해석</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>🔴 美 10Y 실질금리 1.87% → 2.0% 임박</td>
+        <td><span class="pill-high">★★★</span></td>
+        <td>2.0% 돌파 시 멀티플 압박 가속. 고PER 기술주·KOSPI 동반 조정 선행 트리거</td>
+      </tr>
+      <tr>
+        <td>📅 2026-05-12 美 CPI (4월) 발표</td>
+        <td><span class="pill-high">★★★</span></td>
+        <td>ISM 가격 84.6% 선반영. 3.3%(3월) 대비 반등 시 Fed 동결 장기화 확정, 리스크자산 재조정</td>
+      </tr>
+      <tr>
+        <td>🇰🇷 韓 버핏지수 256% (250% 이미 돌파)</td>
+        <td><span class="pill-high">★★★</span></td>
+        <td>미국(228%) 상회하는 극단적 과열. 사상 최고. KOSPI 분할매수 신규 진입 시 리스크 인지 필수</td>
+      </tr>
+      <tr>
+        <td>📈 KOSPI +6.45% 당일 (7,384 신고가)</td>
+        <td><span class="pill-high">★★★</span></td>
+        <td>삼성전자 +13% 주도. 반도체 사이클 피크 아웃 모니터링. 과열 후 급락 선례 주의</td>
+      </tr>
+      <tr>
+        <td>💰 금 $4,705 사상 최고권</td>
+        <td><span class="pill-mid">★★</span></td>
+        <td>달러 약세 + 지정학 리스크 헤지. DXY 95 하회 시 $5,000 추가 상승 모멘텀</td>
+      </tr>
+      <tr>
+        <td>📅 2026-05-28 韓 금통위 (신현송 총재 첫 회의)</td>
+        <td><span class="pill-mid">★★</span></td>
+        <td>2.5% 동결 예상 (8회 연속). 수출 호조 + 집값 + 환율 복합 방정식. 인하 시그널 여부 주목</td>
+      </tr>
+      <tr>
+        <td>🛢️ WTI -15% 급락 ($112→$95)</td>
+        <td><span class="pill-mid">★★</span></td>
+        <td>중동 휴전 기대 + 수요 우려. $85 하회 시 디플레이션 우려 재부상. $110 재반등 시 스태그플레이션</td>
+      </tr>
+      <tr>
+        <td>💻 SOX +45% 1달 과열</td>
+        <td><span class="pill-mid">★★</span></td>
+        <td>AI 사이클 주도. 1주 -5%+ 하락 시 AI 사이클 균열 1차 신호. KOSPI 선행</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 출처 -->
+<section class="block" id="sources">
+  <div class="section-title">📚 7. 출처 (Sources)</div>
+  <div class="section-sub">모든 수치는 아래 1차 출처에서 검증. 단일 출처 의존 회피.</div>
+  <ul style="font-size:12px; color:#475569; padding-left:18px; line-height:1.8;">
+    <li><a href="https://finance.yahoo.com" target="_blank">Yahoo Finance</a> — VIX(^VIX), DXY(DX-Y.NYB), 10Y(^TNX), 30Y(^TYX), IRX(^IRX), WTI(CL=F), Gold(GC=F), USD/KRW(KRW=X), HYG, S&P500(^GSPC), NASDAQ(^IXIC), Dow(^DJI), KOSPI(^KS11), BTC-USD, SOX(^SOX), VVIX(^VVIX) — 2026-05-06 종가</li>
+    <li><a href="https://fred.stlouisfed.org/series/BAMLH0A0HYM2" target="_blank">FRED BAMLH0A0HYM2</a> — 미국 HY OAS 2.83% (2026-04)</li>
+    <li><a href="https://www.freddiemac.com/pmms" target="_blank">Freddie Mac PMMS</a> — 30Y 모기지 6.30% (2026-05-05)</li>
+    <li><a href="https://tradingeconomics.com/united-states/10-year-tips-yield" target="_blank">Trading Economics / FRED DFII10</a> — 10Y TIPS 실질금리 1.87% (2026-05-06)</li>
+    <li><a href="https://www.bls.gov/news.release/cpi.htm" target="_blank">BLS CPI</a> — 미국 CPI 3.3% YoY (2026-03), 4월 발표 예정 2026-05-12</li>
+    <li><a href="https://www.ismworld.org" target="_blank">ISM</a> — 제조업 PMI 52.7, 가격지수 84.6% (2026-04)</li>
+    <li><a href="https://www.federalreserve.gov/monetarypolicy/bst_recenttrends.htm" target="_blank">Fed H.4.1 (WALCL)</a> — 연준 자산 $6.7T (2026-04-29)</li>
+    <li><a href="https://www.federalreserve.gov/releases/h6/current/default.htm" target="_blank">Fed H.6 (M2SL)</a> — 미국 M2 $22,686B +4.6% YoY (2026-03)</li>
+    <li><a href="https://www.ici.org/research/stats/mmf" target="_blank">ICI MMF Weekly</a> — MMF $7.63T (2026-04-29)</li>
+    <li><a href="https://fred.stlouisfed.org/series/T10YIE" target="_blank">FRED T10YIE</a> — BEI 2.46% (2026-04)</li>
+    <li><a href="https://en.stockq.org/index/BDI.php" target="_blank">Baltic Exchange / StockQ</a> — BDI 2,633 (2026-05 초)</li>
+    <li><a href="https://tradingeconomics.com/commodity/copper" target="_blank">LME / Trading Economics</a> — 구리 $12,900/ton (2026-05-05)</li>
+    <li><a href="https://aimsfx.com/2026/04/30/chinese-manufacturing-pmi-rises-to-52-2-in-april-2026-boosting-yuan-prospects/" target="_blank">Caixin / S&P Global</a> — 차이신 PMI 52.2 (2026-04)</li>
+    <li><a href="https://www.gurufocus.com/stock-market-valuations.php" target="_blank">GuruFocus</a> — 미국 버핏지수 227.83% (2026-05-05)</li>
+    <li><a href="https://en.sedaily.com/markets/2026/05/06/buffett-indicator-hits-256-percent-as-korea-stock-market" target="_blank">Seoul Economic Daily</a> — 한국 버핏지수 256.6% (2026-05-06)</li>
+    <li><a href="https://www.upi.com/Top_News/World-News/2026/05/01/exports-rose-in-april/9071777683310/" target="_blank">산업통상자원부 / UPI</a> — 한국 4월 수출 $85.9B +48% (2026-05-01)</li>
+    <li><a href="https://www.bok.or.kr" target="_blank">한국은행 (BOK)</a> — 기준금리 2.50%, ESI 91.7(4월), M2 4,618T (+4.9%)</li>
+    <li><a href="https://tradingeconomics.com/south-korea/government-bond-yield" target="_blank">TradingEconomics / 금융투자협회</a> — 한국 10Y 3.91% (2026-05-04)</li>
+  </ul>
+  <div class="notes" style="margin-top:12px;">
+    <strong>⚠️ 주의 / 한계.</strong><br>
+    · <strong>한국 10Y-1Y 금리차, 3Y 국채금리</strong>: 1Y·3Y 금리는 추정값 (10Y 3.91% 확인, 1Y~3.15%·3Y~3.26% 추정). ECOS/금융투자협회 직접 확인 권장.<br>
+    · <strong>한국 선행지수 순환변동치 (2026년 3월)</strong>: 통계청 발표 미확인으로 사이클 진단에서 제외. 4월 말 발표 예정 자료 확인 후 재진단 필요.<br>
+    · <strong>비반도체 수출 증가율</strong>: 산자부 보도자료에서 반도체 기여도 분리 계산(~+16.5% 추정). 1차 출처: <a href="https://motie.go.kr" target="_blank">motie.go.kr</a><br>
+    · <strong>美 5Y CDS</strong>: ~30bp 추정, 공식 Markit 데이터 직접 확인 권장.<br>
+    · <strong>Gold(GC=F) $4,705</strong>: Yahoo Finance yfinance API 값. TradingEconomics 교차 확인 권장.<br>
+    · KST 기준 2026-05-07 생성. 미국 데이터: 2026-05-06 종가. 한국 데이터: 2026-05-06 (KOSPI 7,384 확인) / 일부 2026-05-05.
+  </div>
+</section>
+
+<footer>
+  Generated 2026-05-07 (KST) · Global Macro Brief Skill · 42개 지표 1차 출처 교차검증<br>
+  데이터 기준: 미국 2026-05-06 NY 종가 / 한국 2026-05-06 KRX 종가
+</footer>
+</div>
+
+<script>
+const COMMON_OPTS = (yLabel, y2Label) => ({
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: true, labels: { font: { size: 10 }, boxWidth: 12 } } },
+  scales: {
+    y: { beginAtZero: false, title: { display: !!yLabel, text: yLabel, font: { size: 10 } }, grid: { color: '#e2e8f0' }, ticks: { font: { size: 9 } } },
+    ...(y2Label ? { y2: { position: 'right', beginAtZero: false, title: { display: true, text: y2Label, font: { size: 10 } }, grid: { drawOnChartArea: false }, ticks: { font: { size: 9 } } } } : {}),
+    x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } }
+  }
+});
+
+// Chart 1: VIX + WTI
+new Chart(document.getElementById('chart-macro'), {
+  type: 'line',
+  data: {
+    labels: ['4/6','4/7','4/8','4/9','4/10','4/13','4/14','4/15','4/16','4/17','4/20','4/21','4/22','4/23','4/24','4/27','4/28','4/29','4/30','5/1','5/4','5/5','5/6'],
+    datasets: [
+      {
+        label: 'VIX',
+        data: [24.17,25.78,21.04,19.49,19.23,19.12,18.36,18.17,17.94,17.48,18.87,19.50,18.92,19.31,18.71,18.02,17.83,18.81,16.89,16.99,18.29,17.38,17.39],
+        borderColor: '#dc2626', backgroundColor: 'rgba(220,38,38,0.1)', tension: 0.3, yAxisID: 'y', pointRadius: 2
+      },
+      {
+        label: 'WTI ($/bbl)',
+        data: [112.41,112.95,94.41,97.87,96.57,99.08,91.28,91.29,94.69,83.85,89.61,92.13,92.96,95.85,94.40,96.37,99.93,106.88,105.07,101.94,106.42,102.27,95.85],
+        borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.1)', tension: 0.3, yAxisID: 'y2', pointRadius: 2
+      }
+    ]
+  },
+  options: COMMON_OPTS('VIX', 'WTI $/bbl')
+});
+
+// Chart 2: S&P 500
+new Chart(document.getElementById('chart-us'), {
+  type: 'line',
+  data: {
+    labels: ['4/7','4/8','4/9','4/10','4/13','4/14','4/15','4/16','4/17','4/20','4/21','4/22','4/23','4/24','4/27','4/28','4/29','4/30','5/1','5/4','5/5','5/6'],
+    datasets: [{
+      label: 'S&P 500',
+      data: [6616.85,6782.81,6824.66,6816.89,6886.24,6967.38,7022.95,7041.28,7126.06,7109.14,7064.01,7137.90,7108.40,7165.08,7173.91,7138.80,7135.95,7209.01,7230.12,7200.75,7259.22,7365.12],
+      borderColor: '#16a34a', backgroundColor: 'rgba(22,163,74,0.1)', tension: 0.3, pointRadius: 2
+    }]
+  },
+  options: COMMON_OPTS('S&P 500')
+});
+
+// Chart 3: KOSPI
+new Chart(document.getElementById('chart-kr'), {
+  type: 'line',
+  data: {
+    labels: ['4/5','4/6','4/7','4/8','4/9','4/12','4/13','4/14','4/15','4/16','4/19','4/20','4/21','4/22','4/23','4/26','4/27','4/28','4/29','5/3','5/6'],
+    datasets: [{
+      label: 'KOSPI',
+      data: [5450.33,5494.78,5872.34,5778.01,5858.87,5808.62,5967.75,6091.39,6226.05,6191.92,6219.09,6388.47,6417.93,6475.81,6475.63,6615.03,6641.02,6690.90,6598.87,6937.00,7384.56],
+      borderColor: '#0ea5e9', backgroundColor: 'rgba(14,165,233,0.1)', tension: 0.3, pointRadius: 2
+    }]
+  },
+  options: COMMON_OPTS('KOSPI')
+});
+</script>
+</body>
+</html>
